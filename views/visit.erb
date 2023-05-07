@@ -1,6 +1,7 @@
 <h2>Записаться</h2>
 <p>На этой странице вы сможете записаться к нам в Barber Shop</p>
 <p><%= @message %></p>
+<p><%= @color %></p>
 
 <form action="/visit" method="POST">
 
@@ -17,6 +18,9 @@
       <option <%= 'selected' if @barber==row['name'] %>><%=row['name']%></option>
     <% end %>
   </select><br>
+
+	<label>Выберите цвет</label><br>
+	<input type="color" name="color"><br> <!-- сохраняет как хэш например #22c9bd -->
 
 	<input type="submit">
 

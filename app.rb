@@ -29,7 +29,7 @@ end
 
 configure do
 	db = get_db()
-	db.execute 'CREATE TABLE IF NOT EXISTS "Users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "username" TEXT, "phone" TEXT, "datestamp" TEXT, "barber" TEXT)'
+	db.execute 'CREATE TABLE IF NOT EXISTS "Users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "username" TEXT, "phone" TEXT, "datestamp" TEXT, "barber" TEXT, "color" TEXT)'
   db.execute 'CREATE TABLE IF NOT EXISTS "Barbers" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" TEXT )'
   seed_db(db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut'])
   db.close
@@ -39,6 +39,7 @@ get '/' do
   erb :index
 end
 
+# авторизация
 get '/login' do
   erb :login
 end
@@ -59,6 +60,7 @@ get '/admin' do
   erb :admin
 end
 
+# зона записи к парикмахеру
 get '/visit' do
   erb :visit
 end
@@ -68,6 +70,7 @@ post '/visit' do
 	@phone = params[:phone]
 	@date_time = params[:date_time]
   @barber = params[:barber]
+	@color = params[:color]
 
 	hh = { user_name: 'Введите имя', phone: 'Введите телефон', date_time: 'Введите дату и время' }
 	@error = hh.select{|key,_| params[key]==''}.values.join(", ")
@@ -75,7 +78,7 @@ post '/visit' do
   return erb :visit if @error!=''
 
   db = get_db()
-  db.execute 'INSERT INTO Users ( username, phone, datestamp, barber ) VALUES (?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber]
+  db.execute 'INSERT INTO Users ( username, phone, datestamp, barber, color ) VALUES (?, ?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber, @color]
   db.close
 
   @message = "Dear #{@user_name}, we'll be waiting for you at #{@date_time}"
@@ -89,6 +92,7 @@ get '/showusers' do
 	erb :showusers
 end
 
+# зона отзывов и обратной связи
 get '/contacts' do
 	erb :contacts
 end
@@ -101,7 +105,7 @@ post '/contacts' do
 	@error = hh.select{|k,_| params[k]==''}.values.join(', ')
 
 	if @error == ''
-		@message2 = "<p style=\"color: green;\">Сообщение принято, ответ будет прислан на вашу почту по адресу #{@email}</p>"
+		@message = "Сообщение принято, ответ будет прислан на вашу почту по адресу #{@email}"
 	  Pony.mail(
 		  {
 		    :subject => 'Ваше сообщение принято',

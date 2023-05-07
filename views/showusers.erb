@@ -5,9 +5,10 @@
     <tr><%= '<th>'+@results[0].keys.join('</th><th>')+'</th>' %></tr>
   </thead>
   <tbody>
-    <% @results.each.with_index do |row, i| %>
-    	<tr <%= i.even? ? 'style="color: red"' : 'style="color: blue"'%>>
-        <td><%= row.values.join('</td><td>') %></td>
+    <% @results.each do |row| %>
+    	<tr>
+        <td><%= row.values[0..-2].join('</td><td>') %></td>
+        <td style="background: <%= row['color'] %>;"><%= row['color'] %></td>
       </tr>
     <% end %>
   <tbody>
