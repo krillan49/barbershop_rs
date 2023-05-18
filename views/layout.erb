@@ -42,17 +42,17 @@
             <%end%> 
           </li>
           <li class="nav-item">
+            <%if @active == 'contacts'%> 
+              <a class="nav-link active" aria-current="page" href="/contacts">Отзывы</a> 
+            <%else%>
+              <a class="nav-link" href="/contacts">Отзывы</a>
+            <%end%>
+          </li>
+          <li class="nav-item">
             <%if @active == 'login'%> 
               <a class="nav-link active" aria-current="page" href="/login">Войти</a>
             <%else%>
               <a class="nav-link" href="/login">Войти</a>
-            <%end%>
-          </li>
-          <li class="nav-item">
-            <%if @active == 'contacts'%> 
-              <a class="nav-link active" aria-current="page" href="/contacts">Отправить сообщение</a> 
-            <%else%>
-              <a class="nav-link" href="/contacts">Отправить сообщение</a>
             <%end%>
           </li>
           <li class="nav-item">
@@ -83,7 +83,7 @@
 
 
   <!-- yield -->
-  <div class="container"><%= yield %></div>
+  <%= yield %>
 
 
   <!-- Подключение Bootstrap js-скриптов через CDN  -->
