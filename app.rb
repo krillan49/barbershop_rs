@@ -82,6 +82,7 @@ post '/visit' do
   erb :visit
 end
 
+# показ данных(наверно будет для админских зон)
 get '/showusers' do
 	@results = @db.execute 'SELECT * FROM Users ORDER BY id DESC'
 	@db.close

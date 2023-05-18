@@ -1,26 +1,38 @@
-<h2>Записаться</h2>
-<p>На этой странице вы сможете записаться к нам в Barber Shop</p>
-<p><%= @message %></p>
+<h2 class="text-center">Записаться</h2>
+<p class="text-center">На этой странице вы сможете записаться к нам в Barber Shop</p>
+<p class="text-center"><%= @message %></p>
 
 <form action="/visit" method="POST">
 
-	<label>Ваше имя</label><br>
-	<input type="text" name="user_name" value="<%= @user_name %>"><br>
-	<label>Ваш телефон</label><br>
-	<input type="text" name="phone" value="<%= @phone %>"><br>
-	<label>Когда вас ждать?</label><br>
-	<input type="datetime-local" name="date_time" value="<%= @date_time %>"><br>
+	<div class="mb-3">	
+		<label for="u_name" class="form-label">Ваше имя</label>
+		<input type="text" class="form-control" id="u_name" name="user_name" value="<%= @user_name %>">
+	</div>
 
-	<label>Ваш парикмахер:</label><br>
-	<select name="barber">
-		<% @barbers.each do |row| %>
-      <option <%= 'selected' if @barber==row['name'] %>><%=row['name']%></option>
-    <% end %>
-  </select><br>
+	<div class="mb-3">
+		<label for="u_phone" class="form-label">Ваш телефон</label>
+		<input type="text" class="form-control" id="u_phone" name="phone" value="<%= @phone %>">
+	</div>
 
-	<label>Выберите цвет</label><br>
-	<input type="color" name="color"><br> <!-- сохраняет как хэш например #22c9bd -->
+	<div class="mb-3">
+		<label for="u_dat" class="form-label">Когда вас ждать?</label>
+		<input type="datetime-local" class="form-control" id="u_dat" name="date_time" value="<%= @date_time %>">
+	</div>
 
-	<input type="submit">
+	<div class="mb-3">
+		<label for="u_barb" class="form-label">Ваш парикмахер:</label>
+		<select name="barber" class="form-select form-select-lg" id="u_barb">
+			<% @barbers.each do |row| %>
+				<option <%= 'selected' if @barber==row['name'] %>><%=row['name']%></option>
+			<% end %>
+		</select>
+	</div>
+
+	<div class="mb-3">
+		<label for="u_color" class="form-label">Выберите цвет</label>
+		<input type="color" class="form-control form-control-color" id="u_color" name="color" value="#563d7c">
+	</div>
+
+	<input type="submit" class="btn btn-lg btn-primary" value="Записаться">
 
 </form>
