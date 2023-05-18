@@ -28,19 +28,39 @@
       <div class="collapse navbar-collapse" id="content">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Главная</a>
+            <%if @active == 'main'%>
+              <a class="nav-link active" aria-current="page" href="/">Главная</a>
+            <%else%>
+              <a class="nav-link" href="/">Главная</a>
+            <%end%>
           </li>
           <li class="nav-item"> 
-            <a class="nav-link" href="/visit">Записаться</a> 
+            <%if @active == 'visit'%>
+              <a class="nav-link active" aria-current="page" href="/visit">Записаться</a>
+            <%else%>
+              <a class="nav-link" href="/visit">Записаться</a>
+            <%end%> 
           </li>
-          <li class="nav-item"> 
-            <a class="nav-link" href="/login">Войти</a> 
+          <li class="nav-item">
+            <%if @active == 'login'%> 
+              <a class="nav-link active" aria-current="page" href="/login">Войти</a>
+            <%else%>
+              <a class="nav-link" href="/login">Войти</a>
+            <%end%>
           </li>
-          <li class="nav-item"> 
-            <a class="nav-link" href="/contacts">Отправить сообщение</a> 
+          <li class="nav-item">
+            <%if @active == 'contacts'%> 
+              <a class="nav-link active" aria-current="page" href="/contacts">Отправить сообщение</a> 
+            <%else%>
+              <a class="nav-link" href="/contacts">Отправить сообщение</a>
+            <%end%>
           </li>
-          <li class="nav-item"> 
-            <a class="nav-link" href="/showusers">Показать вывод из БД</a> 
+          <li class="nav-item">
+            <%if @active == 'showusers'%>
+              <a class="nav-link active" aria-current="page" href="/showusers">Показать вывод из БД</a> 
+            <%else%>
+              <a class="nav-link" href="/showusers">Показать вывод из БД</a>
+            <%end%>
           </li>
         </ul>
         <form class="d-flex" role="search">

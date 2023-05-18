@@ -36,6 +36,7 @@ configure do
 end
 
 get '/' do
+	@active = 'main'
   erb :index
 end
 
@@ -43,10 +44,13 @@ end
 # авторизация
 # =============================================
 get '/login' do
+	@active = 'login'
   erb :login
 end
 
 post '/login' do
+	@active = 'login'
+
   @login    = params[:login]
   @password = params[:password]
 
@@ -59,6 +63,7 @@ post '/login' do
 end
 
 get '/admin' do
+	@active = 'login'
   erb :admin
 end
 
@@ -66,10 +71,13 @@ end
 # зона записи к парикмахеру
 # =============================================
 get '/visit' do
+	@active = 'visit'
   erb :visit
 end
 
 post '/visit' do
+	@active = 'visit'
+
   @user_name = params[:user_name]
 	@phone = params[:phone]
 	@date_time = params[:date_time]
@@ -92,6 +100,8 @@ end
 # показ данных(наверно будет для админских зон)
 # =============================================
 get '/showusers' do
+	@active = 'showusers'
+
 	@results = @db.execute 'SELECT * FROM Users ORDER BY id DESC'
 	@db.close
 	erb :showusers
@@ -101,10 +111,13 @@ end
 # зона отзывов и обратной связи
 # =============================================
 get '/contacts' do
+	@active = 'contacts'
 	erb :contacts
 end
 
 post '/contacts' do
+	@active = 'contacts'
+	
 	@email = params[:email]
 	@user_message = params[:user_message]
 
