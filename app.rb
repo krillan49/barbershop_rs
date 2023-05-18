@@ -2,7 +2,9 @@ require 'sinatra'
 require 'sqlite3'
 require 'pony'
 
+# =============================================
 # методы для помещения парикмахеров в таблицу Barbers если их там еще нет.
+# =============================================
 def is_barber_exists?(db, name)
   db.execute('SELECT * FROM Barbers WHERE name=?', [name]).size > 0
 end
@@ -37,7 +39,9 @@ get '/' do
   erb :index
 end
 
+# =============================================
 # авторизация
+# =============================================
 get '/login' do
   erb :login
 end
@@ -58,7 +62,9 @@ get '/admin' do
   erb :admin
 end
 
+# =============================================
 # зона записи к парикмахеру
+# =============================================
 get '/visit' do
   erb :visit
 end
@@ -70,10 +76,10 @@ post '/visit' do
   @barber = params[:barber]
 	@color = params[:color]
 
+	# ошибка незаполненного поля для каждого поля отдельно
 	hh = { user_name: 'Введите имя', phone: 'Введите телефон', date_time: 'Введите дату и время' }
-	@error = hh.select{|key,_| params[key]==''}.values.join(", ")
-
-  return erb :visit if @error!=''
+	@visit_error = hh.select{|key,_| params[key]==''}
+  return erb :visit if !@visit_error.empty?
 
   @db.execute 'INSERT INTO Users ( username, phone, datestamp, barber, color ) VALUES (?, ?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber, @color]
   @db.close
@@ -82,14 +88,18 @@ post '/visit' do
   erb :visit
 end
 
+# =============================================
 # показ данных(наверно будет для админских зон)
+# =============================================
 get '/showusers' do
 	@results = @db.execute 'SELECT * FROM Users ORDER BY id DESC'
 	@db.close
 	erb :showusers
 end
 
+# =============================================
 # зона отзывов и обратной связи
+# =============================================
 get '/contacts' do
 	erb :contacts
 end

@@ -1,22 +1,32 @@
 <h2 class="text-center">Записаться</h2>
 <p class="text-center">На этой странице вы сможете записаться к нам в Barber Shop</p>
-<p class="text-center"><%= @message %></p>
+<h2 class="text-center text-success"><%= @message %></h2>
 
 <form action="/visit" method="POST">
+	<%= '<fieldset disabled>' if @message %> <!-- Деактивирует заполненную форму если все заполнено -->
 
 	<div class="mb-3">	
 		<label for="u_name" class="form-label">Ваше имя</label>
-		<input type="text" class="form-control" id="u_name" name="user_name" value="<%= @user_name %>">
+		<input class="form-control <%= 'is-invalid' if @visit_error && @visit_error[:user_name] %>" type="text" name="user_name" value="<%= @user_name %>" id="u_name" aria-describedby="u_name_error">
+		<% if @visit_error %>
+			<div id="u_name_error" class="form-text" style="color: red"><%= @visit_error[:user_name] %></div>
+		<% end %>
 	</div>
 
 	<div class="mb-3">
 		<label for="u_phone" class="form-label">Ваш телефон</label>
-		<input type="text" class="form-control" id="u_phone" name="phone" value="<%= @phone %>">
+		<input class="form-control <%= 'is-invalid' if @visit_error && @visit_error[:phone] %>" type="text" name="phone" value="<%= @phone %>" id="u_phone" aria-describedby="u_phone_error">
+		<% if @visit_error %>
+			<div id="u_phone_error" class="form-text" style="color: red"><%= @visit_error[:phone] %></div>
+		<% end %>
 	</div>
 
 	<div class="mb-3">
 		<label for="u_dat" class="form-label">Когда вас ждать?</label>
-		<input type="datetime-local" class="form-control" id="u_dat" name="date_time" value="<%= @date_time %>">
+		<input class="form-control <%= 'is-invalid' if @visit_error && @visit_error[:date_time] %>" name="date_time" value="<%= @date_time %>" type="datetime-local" id="u_dat" aria-describedby="u_dat_error">
+		<% if @visit_error %>
+			<div id="u_dat_error" class="form-text" style="color: red"><%= @visit_error[:date_time] %></div>
+		<% end %>
 	</div>
 
 	<div class="mb-3">
@@ -30,9 +40,10 @@
 
 	<div class="mb-3">
 		<label for="u_color" class="form-label">Выберите цвет</label>
-		<input type="color" class="form-control form-control-color" id="u_color" name="color" value="#563d7c">
+		<input name="color" value="<%=@color%>" type="color" class="form-control form-control-color" id="u_color">
 	</div>
 
 	<input type="submit" class="btn btn-lg btn-primary" value="Записаться">
 
+	<%= '</fieldset>' if @message %>
 </form>
