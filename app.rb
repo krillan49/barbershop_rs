@@ -16,23 +16,21 @@ end
 
 # метод открывающий/создающий базу данных и устанавливающий вывод строк запросов в виде хэша
 def get_db
-	db = SQLite3::Database.new './db/barbershop.db'
-	db.results_as_hash = true
-	db
+	@db = SQLite3::Database.new './db/barbershop.db'
+	@db.results_as_hash = true
 end
 
 before do
-  db = get_db
-	@barbers = db.execute('SELECT * FROM Barbers')
-	db.close
+  get_db()
+	@barbers = @db.execute('SELECT * FROM Barbers')
 end
 
 configure do
-	db = get_db()
-	db.execute 'CREATE TABLE IF NOT EXISTS "Users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "username" TEXT, "phone" TEXT, "datestamp" TEXT, "barber" TEXT, "color" TEXT)'
-  db.execute 'CREATE TABLE IF NOT EXISTS "Barbers" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" TEXT )'
-  seed_db(db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut'])
-  db.close
+	get_db()
+	@db.execute 'CREATE TABLE IF NOT EXISTS "Users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "username" TEXT, "phone" TEXT, "datestamp" TEXT, "barber" TEXT, "color" TEXT)'
+  @db.execute 'CREATE TABLE IF NOT EXISTS "Barbers" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" TEXT )'
+  seed_db(@db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut'])
+  @db.close
 end
 
 get '/' do
@@ -77,18 +75,16 @@ post '/visit' do
 
   return erb :visit if @error!=''
 
-  db = get_db()
-  db.execute 'INSERT INTO Users ( username, phone, datestamp, barber, color ) VALUES (?, ?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber, @color]
-  db.close
+  @db.execute 'INSERT INTO Users ( username, phone, datestamp, barber, color ) VALUES (?, ?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber, @color]
+  @db.close
 
   @message = "Dear #{@user_name}, we'll be waiting for you at #{@date_time}"
   erb :visit
 end
 
 get '/showusers' do
-	db = get_db()
-	@results = db.execute 'SELECT * FROM Users ORDER BY id DESC'
-	db.close
+	@results = @db.execute 'SELECT * FROM Users ORDER BY id DESC'
+	@db.close
 	erb :showusers
 end
 
