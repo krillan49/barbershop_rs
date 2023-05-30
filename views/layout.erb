@@ -41,13 +41,15 @@
               <a class="nav-link" href="/visit">Записаться</a>
             <%end%> 
           </li>
-          <li class="nav-item">
+          <!--  ========== Отключено(contacts) ==========
+          <li class="nav-item">    
             <%if @active == 'contacts'%> 
               <a class="nav-link active" aria-current="page" href="/contacts">Отзывы</a> 
             <%else%>
               <a class="nav-link" href="/contacts">Отзывы</a>
-            <%end%>
+            <%end%>           
           </li>
+          -->
           <li class="nav-item">
             <%if @active == 'login'%> 
               <a class="nav-link active" aria-current="page" href="/login">Войти</a>

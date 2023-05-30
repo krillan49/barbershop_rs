@@ -36,7 +36,7 @@ configure do
 end
 
 get '/' do
-	@active = 'main'
+	@active = 'main'  # для выделения активной страницы в шапке
   erb :index
 end
 
@@ -54,10 +54,10 @@ post '/login' do
   @login    = params[:login]
   @password = params[:password]
 
-  if @login=='admin' && @password=='secret'
+  if @login == 'admin' && @password == 'secret'
     erb :admin
   else
-    @dinaed='Access is denied'
+    @dinaed = 'Access is denied'
     erb :login
   end
 end
@@ -79,14 +79,14 @@ post '/visit' do
 	@active = 'visit'
 
   @user_name = params[:user_name]
-	@phone = params[:phone]
+	@phone     = params[:phone]
 	@date_time = params[:date_time]
-  @barber = params[:barber]
-	@color = params[:color]
+  @barber    = params[:barber]
+	@color     = params[:color]
 
 	# ошибка незаполненного поля для каждого поля отдельно
 	hh = { user_name: 'Введите имя', phone: 'Введите телефон', date_time: 'Введите дату и время' }
-	@visit_error = hh.select{|key,_| params[key]==''}
+	@visit_error = hh.select{|key,_| params[key] == ''}
   return erb :visit if !@visit_error.empty?
 
   @db.execute 'INSERT INTO Users ( username, phone, datestamp, barber, color ) VALUES (?, ?, ?, ?, ?)', [@user_name, @phone, @date_time, @barber, @color]
@@ -108,42 +108,42 @@ get '/showusers' do
 end
 
 # =============================================
-# зона отзывов и обратной связи
+# зона отзывов и обратной связи (Отключено)
 # =============================================
-get '/contacts' do
-	@active = 'contacts'
-	erb :contacts
-end
+# get '/contacts' do
+# 	@active = 'contacts'
+# 	erb :contacts
+# end
 
-post '/contacts' do
-	@active = 'contacts'
+# post '/contacts' do
+# 	@active = 'contacts'
 	
-	@email = params[:email]
-	@user_message = params[:user_message]
+# 	@email = params[:email]
+# 	@user_message = params[:user_message]
 
-	hh = { email: 'Введите почту', user_message: 'Введите сообщение' }
-	@error = hh.select{|k,_| params[k]==''}.values.join(', ')
+# 	hh = { email: 'Введите почту', user_message: 'Введите сообщение' }
+# 	@error = hh.select{|k,_| params[k]==''}.values.join(', ')
 
-	if @error == ''
-		@message = "Сообщение принято, ответ будет прислан на вашу почту по адресу #{@email}"
-	  Pony.mail(
-		  {
-		    :subject => 'Ваше сообщение принято',
-		    :body => 'Ваше сообщение принято',
-		    :to => @email,
-		    :from => 'gigantkroker@gmail.com',
+# 	if @error == ''
+# 		@message = "Сообщение принято, ответ будет прислан на вашу почту по адресу #{@email}"
+# 	  Pony.mail(
+# 		  {
+# 		    :subject => 'Ваше сообщение принято',
+# 		    :body => 'Ваше сообщение принято',
+# 		    :to => @email,
+# 		    :from => '...@gmail.com',
 
-		    :via => :smtp,
-		    :via_options => {
-		      :address => 'smtp.gmail.com',
-		      :port => '587',
-		      :user_name => 'gigantkroker@gmail.com',
-		      :password => 'lokflkbvmodiyvgy',
-		      :authentication => :plain,
-		      :domain => 'gmail.com'
-		    }
-		  }
-		)
-	end
-	erb :contacts
-end
+# 		    :via => :smtp,
+# 		    :via_options => {
+# 		      :address => 'smtp.gmail.com',
+# 		      :port => '587',
+# 		      :user_name => '...@gmail.com',
+# 		      :password => '...',
+# 		      :authentication => :plain,
+# 		      :domain => 'gmail.com'
+# 		    }
+# 		  }
+# 		)
+# 	end
+# 	erb :contacts
+# end
